@@ -19,7 +19,6 @@
  */
  
 // #define USE_SPI_LIB
-#include "platform_conf.h"
 
 #if ARDUINO >= 100
 #include "Arduino.h"
@@ -28,16 +27,16 @@
 #endif
 #include "Sd2Card.h"
 //------------------------------------------------------------------------------
-#ifdef __arm__
+#ifdef ARDUINO_WIO_LTE
 static int8_t mosiPin_, misoPin_, clockPin_;
 // static volatile RwReg *mosiport, *clkport, *misoport;
 static volatile uint8_t *mosiport, *clkport, *misoport;
 static uint32_t mosipinmask, clkpinmask, misopinmask;
-#else
+#else // ARDUINO_WIO_LTE
 static int8_t mosiPin_, misoPin_, clockPin_;
 static volatile uint8_t *mosiport, *clkport, *misoport;
 static uint8_t mosipinmask, clkpinmask, misopinmask;
-#endif
+#endif // ARDUINO_WIO_LTE
 
 //------------------------------------------------------------------------------
 /** nop to tune soft SPI timing */
@@ -308,8 +307,8 @@ uint8_t Sd2Card::init(uint8_t sckRateID, uint8_t chipSelectPin, int8_t mosiPin, 
   uint32_t arg;
 
   // Enable SDCard power 
-  pinMode(15, OUTPUT);
-  digitalWrite(15, HIGH);
+  pinMode(15, OUTPUT);		// Wio LTE Cat.1 - SD_POWR_PIN
+  digitalWrite(15, HIGH);	// Wio LTE Cat.1 - SD_POWR_PIN
   
   // set pin modes
   pinMode(chipSelectPin_, OUTPUT);

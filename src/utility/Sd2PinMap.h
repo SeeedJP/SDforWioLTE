@@ -19,30 +19,21 @@
  */
 
 
-#if defined(__arm__) // Arduino Due Board follows
+#if defined(ARDUINO_WIO_LTE) // Wio LTE Cat.1
  
 #ifndef Sd2PinMap_h
 #define Sd2PinMap_h
 
-#include "platform_conf.h"
 #include <Arduino.h>
 
-#ifndef __STM32F4xx__
-#define WiringPinMode uint8_t
-#endif
+#define SOFTWARE_SPI
+#define __STM32F4xx__ 
 
 uint8_t const SS_PIN = SS;
 uint8_t const MOSI_PIN = MOSI;
 uint8_t const MISO_PIN = MISO;
 uint8_t const SCK_PIN = SCK;
 
-uint8_t badPinNumber(void)
-  __attribute__((error("Pin number is too large or not a constant")));
-
-static inline __attribute__((always_inline))
-  void setPinMode(uint8_t pin, WiringPinMode mode) {  
-    pinMode(pin, mode);
-}
 static inline __attribute__((always_inline))
   uint8_t fastDigitalRead(uint8_t pin) {
     return digitalRead(pin);
