@@ -340,9 +340,13 @@ boolean SDClass::begin(uint8_t csPin, int8_t mosi, int8_t miso, int8_t sck) {
     Return true if initialization succeeds, false otherwise.
 
    */
-  return card.init(SPI_HALF_SPEED, csPin, mosi, miso, sck) &&
-         volume.init(card) &&
-         root.openRoot(volume);
+	if (!card.init(SPI_HALF_SPEED, csPin, mosi, miso, sck)) return false;
+	delay(100);
+
+	if (!volume.init(card)) return false;
+	if (!root.openRoot(volume)) return false;
+
+	return true;
 }
 
 //call this when a card is removed. It will allow you to inster and initialise a new card.
